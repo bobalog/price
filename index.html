@@ -1,0 +1,2006 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#eaf7ff">
+
+<title>뽀짝 가격노트</title>
+
+<style>
+:root {
+  --blue: #72bff2;
+  --blue-dark: #358fd0;
+  --sky: #eef9ff;
+  --sky2: #dff3ff;
+  --text: #33475b;
+  --sub: #8496a7;
+  --line: #deedf6;
+  --pink: #ff9fba;
+  --yellow: #ffd86b;
+  --green: #78cfad;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background:
+    radial-gradient(circle at 10% 0%, #e2f5ff 0, transparent 30%),
+    radial-gradient(circle at 90% 10%, #fff0f5 0, transparent 25%),
+    #f8fcff;
+  color: var(--text);
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Apple SD Gothic Neo",
+    "Noto Sans KR",
+    sans-serif;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  width: min(94%, 560px);
+  margin: auto;
+  padding: 30px 0 105px;
+}
+
+/* HEADER */
+
+.header {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.mascot {
+  font-size: 38px;
+  margin-bottom: 3px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 27px;
+  color: var(--blue-dark);
+  letter-spacing: -1px;
+}
+
+.header p {
+  margin: 7px 0 0;
+  color: var(--sub);
+  font-size: 13px;
+}
+
+/* NAV */
+
+.nav {
+  position: sticky;
+  top: 10px;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  padding: 5px;
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 7px 25px rgba(68,140,190,.08);
+}
+
+.navBtn {
+  border: 0;
+  padding: 11px 4px;
+  border-radius: 13px;
+  background: transparent;
+  color: #8999a7;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.navBtn.active {
+  background: var(--sky2);
+  color: var(--blue-dark);
+}
+
+/* PAGE */
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+.card {
+  background: rgba(255,255,255,.96);
+  border: 1px solid var(--line);
+  border-radius: 23px;
+  padding: 19px;
+  box-shadow: 0 9px 30px rgba(54,128,180,.07);
+}
+
+.sectionTitle {
+  font-size: 19px;
+  font-weight: 900;
+  margin-bottom: 5px;
+}
+
+.sectionSub {
+  font-size: 12px;
+  color: var(--sub);
+  margin-bottom: 17px;
+}
+
+/* SEARCH */
+
+.searchBox {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.searchBox span {
+  position: absolute;
+  left: 14px;
+  top: 13px;
+}
+
+.searchBox input {
+  padding-left: 42px;
+}
+
+/* INPUT */
+
+label {
+  display: block;
+  margin: 15px 0 7px;
+  font-size: 13px;
+  color: #627587;
+  font-weight: 800;
+}
+
+input {
+  width: 100%;
+  padding: 13px 14px;
+  border: 1px solid #dbe8f1;
+  border-radius: 14px;
+  outline: none;
+  background: #fbfdff;
+  color: var(--text);
+  font-size: 16px;
+}
+
+input:focus {
+  border-color: #83c7f1;
+  background: white;
+  box-shadow: 0 0 0 3px #e8f6ff;
+}
+
+.priceInput {
+  position: relative;
+}
+
+.priceInput input {
+  padding-right: 50px;
+}
+
+.yen {
+  position: absolute;
+  right: 16px;
+  top: 13px;
+  color: #8293a3;
+  font-weight: 900;
+}
+
+.primary {
+  width: 100%;
+  border: 0;
+  border-radius: 15px;
+  padding: 14px;
+  margin-top: 20px;
+  background: linear-gradient(135deg, #76c7f7, #59aee7);
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+  box-shadow: 0 7px 16px rgba(67,160,220,.18);
+}
+
+.primary:disabled {
+  opacity: .55;
+}
+
+/* INFO */
+
+.tinyInfo {
+  background: #f0f9ff;
+  color: #68869a;
+  border-radius: 13px;
+  padding: 11px 13px;
+  margin-top: 14px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* MESSAGE */
+
+.message {
+  display: none;
+  margin-top: 13px;
+  padding: 11px;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.message.success {
+  display: block;
+  background: #ebfaf3;
+  color: #247755;
+}
+
+.message.error {
+  display: block;
+  background: #fff0f2;
+  color: #bd5968;
+}
+
+/* PRODUCT GRID */
+
+.productGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 11px;
+}
+
+.productTile {
+  position: relative;
+  min-height: 165px;
+  border: 1px solid #dcecf6;
+  border-radius: 21px;
+  padding: 16px;
+  background:
+    linear-gradient(145deg, #ffffff, #f4fbff);
+  box-shadow: 0 6px 17px rgba(66,140,190,.07);
+  cursor: pointer;
+  transition: .15s ease;
+  overflow: hidden;
+}
+
+.productTile:active {
+  transform: scale(.97);
+}
+
+.productTile::after {
+  content: "✦";
+  position: absolute;
+  right: 11px;
+  top: 8px;
+  color: #c6e9ff;
+  font-size: 22px;
+}
+
+.tileEmoji {
+  font-size: 27px;
+}
+
+.tileName {
+  margin-top: 9px;
+  font-size: 15px;
+  line-height: 1.35;
+  font-weight: 900;
+  word-break: break-word;
+}
+
+.tilePrice {
+  margin-top: 12px;
+  color: var(--blue-dark);
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.tileMeta {
+  margin-top: 4px;
+  color: #92a2b0;
+  font-size: 10px;
+  line-height: 1.5;
+}
+
+/* DETAIL */
+
+.back {
+  border: 0;
+  background: transparent;
+  padding: 3px 0 13px;
+  color: var(--blue-dark);
+  font-weight: 800;
+}
+
+.detailHero {
+  text-align: center;
+  padding: 9px 5px 19px;
+}
+
+.detailEmoji {
+  font-size: 45px;
+}
+
+.detailName {
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 900;
+}
+
+.winner {
+  position: relative;
+  padding: 18px;
+  margin-bottom: 15px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #fff9df, #fffdf4);
+  border: 1px solid #f8e8a9;
+  text-align: center;
+}
+
+.winnerLabel {
+  color: #9e7c19;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.winnerMarket {
+  margin-top: 5px;
+  font-size: 20px;
+  font-weight: 900;
+  color: #765b0e;
+}
+
+.winnerPrice {
+  margin-top: 3px;
+  font-size: 27px;
+  font-weight: 900;
+  color: #e59b25;
+}
+
+.saving {
+  margin-top: 5px;
+  color: #9a8656;
+  font-size: 12px;
+}
+
+/* MARKET PRICE */
+
+.marketCard {
+  padding: 15px;
+  margin-top: 9px;
+  border: 1px solid #e3edf4;
+  border-radius: 17px;
+  background: white;
+}
+
+.marketTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  align-items: center;
+}
+
+.rank {
+  display: inline-flex;
+  width: 26px;
+  height: 26px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #edf7fd;
+  margin-right: 6px;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.marketName {
+  font-weight: 900;
+}
+
+.marketPrice {
+  color: var(--blue-dark);
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.compareText {
+  padding-left: 34px;
+  margin-top: 5px;
+  font-size: 11px;
+  color: #94a3af;
+}
+
+/* MANAGE */
+
+.manageItem {
+  padding: 15px;
+  margin-top: 10px;
+  border: 1px solid #e1ecf3;
+  border-radius: 17px;
+  background: #fff;
+}
+
+.manageTop {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.manageMarket {
+  color: #8192a1;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.manageProduct {
+  margin-top: 3px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.managePrice {
+  color: var(--blue-dark);
+  font-size: 18px;
+  font-weight: 900;
+  white-space: nowrap;
+}
+
+.date {
+  margin-top: 5px;
+  color: #a2afba;
+  font-size: 10px;
+}
+
+.manageButtons {
+  display: flex;
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.smallBtn {
+  flex: 1;
+  border: 0;
+  border-radius: 10px;
+  padding: 9px;
+  font-weight: 800;
+}
+
+.editBtn {
+  background: #eaf6ff;
+  color: #378cca;
+}
+
+.deleteBtn {
+  background: #fff0f3;
+  color: #c65f72;
+}
+
+/* EMPTY */
+
+.empty {
+  padding: 38px 10px;
+  text-align: center;
+  color: #96a6b3;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.loading {
+  padding: 35px;
+  text-align: center;
+  color: #8fa1af;
+}
+
+/* MODAL */
+
+.modalBg {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  padding: 20px;
+  background: rgba(38,56,75,.35);
+  align-items: center;
+  justify-content: center;
+}
+
+.modalBg.show {
+  display: flex;
+}
+
+.modal {
+  width: min(100%, 450px);
+  background: white;
+  padding: 21px;
+  border-radius: 23px;
+  box-shadow: 0 20px 50px rgba(20,50,70,.2);
+}
+
+.modalTitle {
+  font-size: 19px;
+  font-weight: 900;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 8px;
+  margin-top: 20px;
+}
+
+.cancelBtn,
+.updateBtn {
+  border: 0;
+  padding: 12px;
+  border-radius: 12px;
+  font-weight: 900;
+}
+
+.cancelBtn {
+  flex: 1;
+  background: #eef3f6;
+  color: #738493;
+}
+
+.updateBtn {
+  flex: 2;
+  background: var(--blue);
+  color: white;
+}
+
+/* MOBILE */
+
+@media (max-width: 360px) {
+  .productGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .navBtn {
+    font-size: 11px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header class="header">
+    <div class="mascot">🛒☁️</div>
+    <h1>뽀짝 가격노트</h1>
+    <p>마트 가격, 기억하지 말고 기록하기 ˚₊‧♡</p>
+  </header>
+
+
+  <nav class="nav">
+    <button
+      class="navBtn active"
+      onclick="showPage('products', this)">
+      🧺 상품
+    </button>
+
+    <button
+      class="navBtn"
+      onclick="showPage('add', this)">
+      ＋ 기록
+    </button>
+
+    <button
+      class="navBtn"
+      onclick="showPage('manage', this)">
+      ✏️ 관리
+    </button>
+  </nav>
+
+
+  <!-- 상품 목록 -->
+
+  <section id="products" class="page active">
+
+    <div class="card">
+
+      <div class="sectionTitle">
+        🧺 저장한 상품
+      </div>
+
+      <div class="sectionSub">
+        상품을 누르면 마트별 가격을 비교해줘요!
+      </div>
+
+
+      <div class="searchBox">
+        <span>🔎</span>
+
+        <input
+          id="productSearch"
+          placeholder="상품 검색"
+          oninput="renderProducts()">
+      </div>
+
+
+      <div
+        id="productGrid"
+        class="productGrid">
+
+        <div class="loading">
+          ☁️ 불러오는 중...
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 상품 상세 -->
+
+  <section id="detail" class="page">
+
+    <div class="card">
+
+      <button
+        class="back"
+        onclick="backToProducts()">
+        ← 상품목록
+      </button>
+
+      <div id="detailContent"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 등록 -->
+
+  <section id="add" class="page">
+
+    <div class="card">
+
+      <div class="sectionTitle">
+        ✏️ 오늘의 가격
+      </div>
+
+      <div class="sectionSub">
+        마트에서 발견한 가격을 슥 기록해요.
+      </div>
+
+
+      <label>🏪 마트</label>
+
+      <input
+        id="market"
+        list="marketList"
+        placeholder="예: 코스모스">
+
+      <datalist id="marketList"></datalist>
+
+
+      <label>🧃 상품명</label>
+
+      <input
+        id="product"
+        list="productSuggestions"
+        placeholder="예: 오이오차 600ml">
+
+      <datalist
+        id="productSuggestions">
+      </datalist>
+
+
+      <label>💴 가격</label>
+
+      <div class="priceInput">
+
+        <input
+          id="price"
+          type="number"
+          inputmode="numeric"
+          min="1"
+          placeholder="108">
+
+        <span class="yen">円</span>
+
+      </div>
+
+
+      <button
+        id="saveBtn"
+        class="primary"
+        onclick="savePrice()">
+
+        ♡ 가격 저장하기
+
+      </button>
+
+
+      <div
+        id="message"
+        class="message">
+      </div>
+
+
+      <div class="tinyInfo">
+        💡 같은 <b>마트 + 상품</b>을 다시 입력하면
+        기록이 하나 더 생기지 않고 최신 가격으로 갱신돼요.
+        <br>
+        상품명에 <b>600ml · 1L · 10개입</b>처럼
+        규격도 같이 적어주세요!
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- 관리 -->
+
+  <section id="manage" class="page">
+
+    <div class="card">
+
+      <div class="sectionTitle">
+        ✏️ 가격 관리
+      </div>
+
+      <div class="sectionSub">
+        잘못 적은 기록은 여기서 수정하거나 삭제해요.
+      </div>
+
+
+      <div class="searchBox">
+
+        <span>🔎</span>
+
+        <input
+          id="manageSearch"
+          placeholder="마트 또는 상품 검색"
+          oninput="renderManage()">
+
+      </div>
+
+
+      <div id="manageList"></div>
+
+    </div>
+
+  </section>
+
+</div>
+
+
+<!-- 수정 모달 -->
+
+<div
+  id="editModal"
+  class="modalBg">
+
+  <div class="modal">
+
+    <div class="modalTitle">
+      ✏️ 기록 수정하기
+    </div>
+
+    <input
+      id="editId"
+      type="hidden">
+
+
+    <label>🏪 마트</label>
+    <input id="editMarket">
+
+
+    <label>🧃 상품명</label>
+    <input id="editProduct">
+
+
+    <label>💴 가격</label>
+
+    <div class="priceInput">
+
+      <input
+        id="editPrice"
+        type="number">
+
+      <span class="yen">円</span>
+
+    </div>
+
+
+    <div class="modalButtons">
+
+      <button
+        class="cancelBtn"
+        onclick="closeEdit()">
+        취소
+      </button>
+
+      <button
+        class="updateBtn"
+        onclick="updateItem()">
+        저장
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwl7srwqVZeRNy0XuBlFX9sKIGBQG_fJHw9DBBvi4vF0rXBPhzrLqCXDfgb0CLWH5Xx/exec";
+
+let data = [];
+
+
+/* =====================
+   데이터 불러오기
+===================== */
+
+async function loadData() {
+
+  try {
+
+    const response =
+      await fetch(
+        API_URL + "?t=" + Date.now()
+      );
+
+    const result =
+      await response.json();
+
+
+    if (!Array.isArray(result)) {
+      throw new Error(
+        result.message || "데이터 오류"
+      );
+    }
+
+
+    data = result;
+
+    updateSuggestions();
+    renderProducts();
+    renderManage();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    document.getElementById(
+      "productGrid"
+    ).innerHTML = `
+
+      <div class="empty">
+        🥲 데이터를 불러오지 못했어요.<br>
+        Apps Script 배포를 확인해주세요.
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+/* =====================
+   페이지
+===================== */
+
+function showPage(id, button) {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(page =>
+      page.classList.remove("active")
+    );
+
+
+  document
+    .getElementById(id)
+    .classList.add("active");
+
+
+  if (button) {
+
+    document
+      .querySelectorAll(".navBtn")
+      .forEach(btn =>
+        btn.classList.remove("active")
+      );
+
+    button.classList.add("active");
+
+  }
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+function backToProducts() {
+
+  document
+    .querySelectorAll(".page")
+    .forEach(page =>
+      page.classList.remove("active")
+    );
+
+  document
+    .getElementById("products")
+    .classList.add("active");
+
+}
+
+
+/* =====================
+   자동완성
+===================== */
+
+function updateSuggestions() {
+
+  const markets =
+    [...new Set(
+      data.map(x => x.market)
+        .filter(Boolean)
+    )].sort();
+
+
+  const products =
+    [...new Set(
+      data.map(x => x.product)
+        .filter(Boolean)
+    )].sort();
+
+
+  document.getElementById(
+    "marketList"
+  ).innerHTML =
+    markets.map(x =>
+      `<option value="${escapeHTML(x)}">`
+    ).join("");
+
+
+  document.getElementById(
+    "productSuggestions"
+  ).innerHTML =
+    products.map(x =>
+      `<option value="${escapeHTML(x)}">`
+    ).join("");
+
+}
+
+
+/* =====================
+   상품 타일
+===================== */
+
+function renderProducts() {
+
+  const target =
+    document.getElementById(
+      "productGrid"
+    );
+
+  const search =
+    document.getElementById(
+      "productSearch"
+    )
+    .value
+    .trim()
+    .toLowerCase();
+
+
+  const groups = {};
+
+
+  data.forEach(item => {
+
+    if (
+      !String(item.product)
+        .toLowerCase()
+        .includes(search)
+    ) {
+      return;
+    }
+
+
+    if (!groups[item.product]) {
+      groups[item.product] = [];
+    }
+
+    groups[item.product].push(item);
+
+  });
+
+
+  const products =
+    Object.entries(groups);
+
+
+  if (!products.length) {
+
+    target.innerHTML = `
+
+      <div class="empty">
+        🛒 아직 저장된 상품이 없어요.<br>
+        가격을 하나 기록해볼까요?
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  /*
+    가장 최근 업데이트된 상품부터
+  */
+
+  products.sort((a,b) => {
+
+    const dateA =
+      getLatestDate(a[1]);
+
+    const dateB =
+      getLatestDate(b[1]);
+
+    return dateB.localeCompare(dateA);
+
+  });
+
+
+  target.innerHTML =
+    products.map(
+      ([product, items]) => {
+
+        const min =
+          Math.min(
+            ...items.map(x =>
+              Number(x.price)
+            )
+          );
+
+        const latest =
+          getLatestDate(items);
+
+        const markets =
+          new Set(
+            items.map(x => x.market)
+          ).size;
+
+
+        return `
+
+          <div
+            class="productTile"
+            onclick="openProduct(
+              '${escapeJS(product)}'
+            )">
+
+            <div class="tileEmoji">
+              ${getProductEmoji(product)}
+            </div>
+
+            <div class="tileName">
+              ${escapeHTML(product)}
+            </div>
+
+            <div class="tilePrice">
+              최저 ¥${formatPrice(min)}
+            </div>
+
+            <div class="tileMeta">
+              🏪 ${markets}개 마트 비교
+              <br>
+              ☁️ ${formatDate(latest)} 업데이트
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("");
+
+}
+
+
+/* =====================
+   상품 상세 비교
+===================== */
+
+function openProduct(product) {
+
+  const items =
+    data
+      .filter(x =>
+        x.product === product
+      )
+      .sort(
+        (a,b) =>
+          Number(a.price) -
+          Number(b.price)
+      );
+
+
+  if (!items.length)
+    return;
+
+
+  const min =
+    Math.min(
+      ...items.map(x =>
+        Number(x.price)
+      )
+    );
+
+
+  const max =
+    Math.max(
+      ...items.map(x =>
+        Number(x.price)
+      )
+    );
+
+
+  const winners =
+    items.filter(x =>
+      Number(x.price) === min
+    );
+
+
+  const winnerText =
+    winners.length === 1
+
+      ? `${escapeHTML(
+          winners[0].market
+        )}가 제일 저렴해요!`
+
+      : `${winners
+          .map(x =>
+            escapeHTML(x.market)
+          )
+          .join(" · ")} 공동 최저가!`;
+
+
+  let savingText = "";
+
+  if (
+    items.length > 1 &&
+    max > min
+  ) {
+
+    savingText =
+      `가장 비싼 곳보다 ¥${formatPrice(
+        max - min
+      )} 절약 ✨`;
+
+  }
+
+  else if (items.length === 1) {
+
+    savingText =
+      "다른 마트 가격도 기록하면 비교해드려요 ♡";
+
+  }
+
+  else {
+
+    savingText =
+      "모든 마트의 가격이 같아요!";
+
+  }
+
+
+  document.getElementById(
+    "detailContent"
+  ).innerHTML = `
+
+    <div class="detailHero">
+
+      <div class="detailEmoji">
+        ${getProductEmoji(product)}
+      </div>
+
+      <div class="detailName">
+        ${escapeHTML(product)}
+      </div>
+
+    </div>
+
+
+    <div class="winner">
+
+      <div class="winnerLabel">
+        🏆 가격 비교 결과
+      </div>
+
+      <div class="winnerMarket">
+        ${winnerText}
+      </div>
+
+      <div class="winnerPrice">
+        ¥${formatPrice(min)}
+      </div>
+
+      <div class="saving">
+        ${savingText}
+      </div>
+
+    </div>
+
+
+    <div class="sectionTitle">
+      🏪 마트별 가격
+    </div>
+
+
+    ${items.map(
+      (item,index) => {
+
+        const diff =
+          Number(item.price) - min;
+
+        const isBest =
+          Number(item.price) === min;
+
+        return `
+
+          <div class="marketCard">
+
+            <div class="marketTop">
+
+              <div class="marketName">
+
+                <span class="rank">
+                  ${
+                    isBest
+                    ? "👑"
+                    : index + 1
+                  }
+                </span>
+
+                ${escapeHTML(
+                  item.market
+                )}
+
+              </div>
+
+
+              <div class="marketPrice">
+
+                ¥${formatPrice(
+                  item.price
+                )}
+
+              </div>
+
+            </div>
+
+
+            <div class="compareText">
+
+              ${
+                isBest
+
+                ? "✨ 가장 저렴해요!"
+
+                : `최저가보다 +¥${formatPrice(
+                    diff
+                  )}`
+              }
+
+              · ${formatDate(
+                item.date
+              )}
+
+            </div>
+
+          </div>
+
+        `;
+
+      }
+    ).join("")}
+
+  `;
+
+
+  document
+    .querySelectorAll(".page")
+    .forEach(page =>
+      page.classList.remove("active")
+    );
+
+
+  document
+    .getElementById("detail")
+    .classList.add("active");
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+/* =====================
+   저장
+===================== */
+
+async function savePrice() {
+
+  const market =
+    document.getElementById(
+      "market"
+    ).value.trim();
+
+  const product =
+    document.getElementById(
+      "product"
+    ).value.trim();
+
+  const price =
+    Number(
+      document.getElementById(
+        "price"
+      ).value
+    );
+
+
+  if (
+    !market ||
+    !product ||
+    !price ||
+    price <= 0
+  ) {
+
+    showMessage(
+      "마트 · 상품명 · 가격을 확인해주세요 🥺",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const button =
+    document.getElementById(
+      "saveBtn"
+    );
+
+
+  button.disabled = true;
+  button.textContent =
+    "☁️ 저장하는 중...";
+
+
+  try {
+
+    const response =
+      await fetch(API_URL, {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body: JSON.stringify({
+
+          action: "add",
+          market,
+          product,
+          price
+
+        })
+
+      });
+
+
+    const result =
+      await response.json();
+
+
+    if (!result.success) {
+      throw new Error(
+        result.message
+      );
+    }
+
+
+    if (result.updated) {
+
+      showMessage(
+        "기존 가격을 최신 가격으로 바꿨어요! ✨",
+        "success"
+      );
+
+    }
+
+    else {
+
+      showMessage(
+        "새 가격을 저장했어요! ♡",
+        "success"
+      );
+
+    }
+
+
+    /*
+      상품은 남겨두기
+      다른 마트 가격을 바로 입력하기 편함
+    */
+
+    document.getElementById(
+      "market"
+    ).value = "";
+
+    document.getElementById(
+      "price"
+    ).value = "";
+
+
+    await loadData();
+
+  }
+
+  catch(error) {
+
+    console.error(error);
+
+    showMessage(
+      "저장 중 문제가 생겼어요 🥲",
+      "error"
+    );
+
+  }
+
+  finally {
+
+    button.disabled = false;
+
+    button.textContent =
+      "♡ 가격 저장하기";
+
+  }
+
+}
+
+
+/* =====================
+   관리
+===================== */
+
+function renderManage() {
+
+  const target =
+    document.getElementById(
+      "manageList"
+    );
+
+  const search =
+    document.getElementById(
+      "manageSearch"
+    )
+    .value
+    .trim()
+    .toLowerCase();
+
+
+  const items =
+    [...data]
+      .sort(
+        (a,b) =>
+          String(b.date)
+            .localeCompare(
+              String(a.date)
+            )
+      )
+      .filter(item =>
+
+        String(item.market)
+          .toLowerCase()
+          .includes(search)
+
+        ||
+
+        String(item.product)
+          .toLowerCase()
+          .includes(search)
+
+      );
+
+
+  if (!items.length) {
+
+    target.innerHTML = `
+
+      <div class="empty">
+        ✏️ 관리할 기록이 없어요.
+      </div>
+
+    `;
+
+    return;
+
+  }
+
+
+  target.innerHTML =
+    items.map(item => `
+
+      <div class="manageItem">
+
+        <div class="manageTop">
+
+          <div>
+
+            <div class="manageMarket">
+              🏪 ${escapeHTML(
+                item.market
+              )}
+            </div>
+
+            <div class="manageProduct">
+              ${escapeHTML(
+                item.product
+              )}
+            </div>
+
+          </div>
+
+
+          <div class="managePrice">
+
+            ¥${formatPrice(
+              item.price
+            )}
+
+          </div>
+
+        </div>
+
+
+        <div class="date">
+
+          ☁️ ${formatDate(
+            item.date
+          )} 업데이트
+
+        </div>
+
+
+        <div class="manageButtons">
+
+          <button
+            class="smallBtn editBtn"
+            onclick="openEdit(
+              '${escapeJS(item.id)}'
+            )">
+
+            ✏️ 수정
+
+          </button>
+
+
+          <button
+            class="smallBtn deleteBtn"
+            onclick="deleteItem(
+              '${escapeJS(item.id)}'
+            )">
+
+            🗑 삭제
+
+          </button>
+
+        </div>
+
+      </div>
+
+    `).join("");
+
+}
+
+
+/* =====================
+   수정
+===================== */
+
+function openEdit(id) {
+
+  const item =
+    data.find(x =>
+      String(x.id) === String(id)
+    );
+
+
+  if (!item)
+    return;
+
+
+  document.getElementById(
+    "editId"
+  ).value = item.id;
+
+  document.getElementById(
+    "editMarket"
+  ).value = item.market;
+
+  document.getElementById(
+    "editProduct"
+  ).value = item.product;
+
+  document.getElementById(
+    "editPrice"
+  ).value = item.price;
+
+
+  document.getElementById(
+    "editModal"
+  ).classList.add("show");
+
+}
+
+
+function closeEdit() {
+
+  document.getElementById(
+    "editModal"
+  ).classList.remove("show");
+
+}
+
+
+async function updateItem() {
+
+  const id =
+    document.getElementById(
+      "editId"
+    ).value;
+
+  const market =
+    document.getElementById(
+      "editMarket"
+    ).value.trim();
+
+  const product =
+    document.getElementById(
+      "editProduct"
+    ).value.trim();
+
+  const price =
+    Number(
+      document.getElementById(
+        "editPrice"
+      ).value
+    );
+
+
+  if (
+    !market ||
+    !product ||
+    !price ||
+    price <= 0
+  ) {
+    return;
+  }
+
+
+  try {
+
+    const response =
+      await fetch(API_URL, {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body: JSON.stringify({
+
+          action: "update",
+          id,
+          market,
+          product,
+          price
+
+        })
+
+      });
+
+
+    const result =
+      await response.json();
+
+
+    if (!result.success) {
+      throw new Error(
+        result.message
+      );
+    }
+
+
+    closeEdit();
+
+    await loadData();
+
+  }
+
+  catch(error) {
+
+    alert(
+      "수정하지 못했어요 🥲"
+    );
+
+  }
+
+}
+
+
+/* =====================
+   삭제
+===================== */
+
+async function deleteItem(id) {
+
+  const item =
+    data.find(x =>
+      String(x.id) === String(id)
+    );
+
+
+  if (!item)
+    return;
+
+
+  const ok =
+    confirm(
+      `🗑 ${item.product}\n` +
+      `${item.market} · ¥${formatPrice(item.price)}\n\n` +
+      `이 기록을 삭제할까요?`
+    );
+
+
+  if (!ok)
+    return;
+
+
+  try {
+
+    const response =
+      await fetch(API_URL, {
+
+        method: "POST",
+
+        headers: {
+          "Content-Type":
+            "text/plain;charset=utf-8"
+        },
+
+        body: JSON.stringify({
+
+          action: "delete",
+          id
+
+        })
+
+      });
+
+
+    const result =
+      await response.json();
+
+
+    if (!result.success) {
+      throw new Error(
+        result.message
+      );
+    }
+
+
+    await loadData();
+
+  }
+
+  catch(error) {
+
+    alert(
+      "삭제하지 못했어요 🥲"
+    );
+
+  }
+
+}
+
+
+/* =====================
+   유틸
+===================== */
+
+function getLatestDate(items) {
+
+  return items
+    .map(x =>
+      String(x.date || "")
+    )
+    .sort()
+    .reverse()[0] || "";
+
+}
+
+
+function formatDate(date) {
+
+  if (!date)
+    return "-";
+
+  const parts =
+    String(date).split("-");
+
+  if (parts.length !== 3)
+    return date;
+
+  return `${Number(parts[1])}/${Number(parts[2])}`;
+
+}
+
+
+function formatPrice(value) {
+
+  return Number(value)
+    .toLocaleString("ja-JP");
+
+}
+
+
+function getProductEmoji(name) {
+
+  const n =
+    String(name).toLowerCase();
+
+
+  if (
+    n.includes("우유") ||
+    n.includes("밀크")
+  ) return "🥛";
+
+
+  if (
+    n.includes("차") ||
+    n.includes("오이오차") ||
+    n.includes("음료") ||
+    n.includes("콜라") ||
+    n.includes("주스")
+  ) return "🧃";
+
+
+  if (
+    n.includes("계란") ||
+    n.includes("달걀")
+  ) return "🥚";
+
+
+  if (
+    n.includes("라면") ||
+    n.includes("컵누들")
+  ) return "🍜";
+
+
+  if (
+    n.includes("초코") ||
+    n.includes("과자")
+  ) return "🍫";
+
+
+  if (
+    n.includes("빵")
+  ) return "🥐";
+
+
+  if (
+    n.includes("사과") ||
+    n.includes("과일")
+  ) return "🍎";
+
+
+  return "🛍️";
+
+}
+
+
+function showMessage(text,type) {
+
+  const el =
+    document.getElementById(
+      "message"
+    );
+
+  el.textContent = text;
+
+  el.className =
+    "message " + type;
+
+}
+
+
+function escapeHTML(value) {
+
+  return String(value ?? "")
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+function escapeJS(value) {
+
+  return String(value ?? "")
+    .replaceAll("\\","\\\\")
+    .replaceAll("'","\\'");
+
+}
+
+
+/* 모달 바깥 누르면 닫기 */
+
+document
+  .getElementById("editModal")
+  .addEventListener(
+    "click",
+    function(e) {
+
+      if (e.target === this) {
+        closeEdit();
+      }
+
+    }
+  );
+
+
+/* 시작 */
+
+loadData();
+
+</script>
+
+</body>
+</html>
